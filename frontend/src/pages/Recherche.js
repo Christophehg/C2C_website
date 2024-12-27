@@ -33,15 +33,17 @@ const SearchItemsPage = () => {
 
     return (
         <div>
+            <Navbar/>
             <h1>Rechercher des objets</h1>
-            <SearchBar onSearch={handleSearch} />
+            <SearchBar onSearch={handleSearch}/>
             <div className="items-container">
                 {filteredItems.length > 0 ? (
-                    filteredItems.map((item) => <ItemCard key={item.id} item={item} />)
+                    filteredItems.map((item) => <ItemCard key={item.id} item={item}/>)
                 ) : (
                     <p>Aucun objet trouvé.</p>
                 )}
             </div>
+            <Footer/>
         </div>
     );
 };
