@@ -1,4 +1,4 @@
-package iut.backend;
+package c2cwebsite.appli;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
