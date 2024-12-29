@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Inscription.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import api  from '../api/api';
 
 const Inscription = () => {
     const [formData, setFormData] = useState({ login: '', password: '', city: '' });
@@ -12,11 +13,22 @@ const Inscription = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         // Simulate form submission
         setMessage('Inscription réussie !');
-        setFormData({ login: '', password: '', city: '' });
+        console.log(formData);
+        // setFormData({ login: '', password: '', city: '' });
+
+        try {
+            const response = await api.testAPI(formData.login, formData.password, formData.city);
+            setMessage(response); // Message de la réponse, peut-être "Test réussi"
+            setFormData({ login: '', password: '', city: '' });
+        } catch (error) {
+            console.error('Erreur lors de la soumission du formulaire:', error);
+            setMessage('Une erreur est survenue lors de l\'inscription');
+        }
+
     };
 
     return (
