@@ -9,6 +9,8 @@ public interface ISiteVente {
 
     public Utilisateur creationUtilisateur(String pseudo, String mdp, String villeResidence);
 
+    public Utilisateur verifierConnextion(String pseudo, String mdp);
+
     public Item ajouterItem(String nom, String description, float prix, Utilisateur utilisateur);
 
     public boolean vendreItem(Item item, Utilisateur propritaireVente, Utilisateur acquereur);

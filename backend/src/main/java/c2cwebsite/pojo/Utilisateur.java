@@ -54,9 +54,7 @@ public class Utilisateur {
         }
     }
 
-    public String getPseudo() {
-        return pseudo;
-    }
+
 
     public List<Item> getItemsAchetes() {
         return itemsAchetes;
@@ -90,4 +88,19 @@ public class Utilisateur {
     }
 
 
+    public String getPseudo() {
+        return pseudo;
+    }
+
+    public String getVilleResidence() {
+        return villeResidence;
+    }
+
+    public String getMdpHache() {
+        return mdpHache;
+    }
+
+    public void setMdpHache(String mdpHache) {
+        this.mdpHache = mdpHache;
+    }
 }

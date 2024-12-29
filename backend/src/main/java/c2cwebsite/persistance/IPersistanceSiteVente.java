@@ -8,6 +8,6 @@ public interface IPersistanceSiteVente {
 
     public void ajouterUtilisateur(Utilisateur utilisateur);
     public List<Utilisateur> getUtilisateurs();
-    //public Utilisateur getUtilisateur(int id);
+    public Utilisateur getUtilisateur(String pseudo);
 
 }

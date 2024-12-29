@@ -5,6 +5,7 @@ import c2cwebsite.pojo.Administrateur;
 import c2cwebsite.pojo.Item;
 import c2cwebsite.pojo.Utilisateur;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,17 +19,34 @@ public class SiteVente implements ISiteVente {
     @Autowired
     private IPersistanceSiteVente persistanceSiteVente;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     private List<Utilisateur> utilisateurList = new ArrayList<Utilisateur>();
     private List<Administrateur> administrateurList = new ArrayList<Administrateur>();
 
 
     @Override
     public Utilisateur creationUtilisateur(String pseudo, String mdp, String villeResidence) {
-        Utilisateur nouveauUtilisateur = new Utilisateur(pseudo, mdp, villeResidence);
+        String mdpHache = passwordEncoder.encode(mdp);
+        Utilisateur nouveauUtilisateur = new Utilisateur(pseudo, mdpHache, villeResidence);
         utilisateurList.add(nouveauUtilisateur);
         persistanceSiteVente.ajouterUtilisateur(nouveauUtilisateur);
         return nouveauUtilisateur;
     }
+
+    @Override
+    public Utilisateur verifierConnextion(String pseudo, String mdp) {
+        Utilisateur utilisateur = persistanceSiteVente.getUtilisateur(pseudo);
+
+        if(utilisateur != null) {
+            if (passwordEncoder.matches(utilisateur.getMdpHache(), passwordEncoder.encode(mdp))){
+                return utilisateur;
+            }
+        }
+        return null;
+    }
+
 
     @Override
     public Item ajouterItem(String nom, String description, float prix, Utilisateur utilisateur) {
