@@ -1,11 +1,21 @@
 package c2cwebsite.pojo;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+
+@Entity
+@Table(name="Item")
 public class Item {
+    @Id
+    @GeneratedValue
+    private int numeroE;
 
     private String nom;
     private String description;
     private float prix;
-    private int numeroE;
     private boolean vendu;
     private String proprietaire;
     private String acquereur;
@@ -20,6 +30,9 @@ public class Item {
         acquereur = "";
     }
 
+    public Item() {
+
+    }
 
     public void vendreObjet(Utilisateur acquereur) {
         this.vendu = true;

@@ -1,6 +1,8 @@
 package c2cwebsite.persistance;
 
+import c2cwebsite.persistance.repository.IPersistanceUtilisateur;
 import c2cwebsite.pojo.Utilisateur;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +12,7 @@ import java.util.List;
 public class PersistanceSiteVente implements IPersistanceSiteVente {
 
     @Autowired
-    IPersistanceUtilisateur persistanceUtilisateur;
+    private IPersistanceUtilisateur persistanceUtilisateur;
 
     @Override
     public void ajouterUtilisateur(Utilisateur utilisateur) {
@@ -21,5 +23,4 @@ public class PersistanceSiteVente implements IPersistanceSiteVente {
     public List<Utilisateur> getUtilisateurs() {
         return persistanceUtilisateur.findAll();
     }
-
 }
