@@ -1,8 +1,10 @@
 package c2cwebsite.model;
 
+import c2cwebsite.persistance.IPersistanceSiteVente;
 import c2cwebsite.pojo.Administrateur;
 import c2cwebsite.pojo.Item;
 import c2cwebsite.pojo.Utilisateur;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,6 +15,9 @@ import java.util.List;
 public class SiteVente implements ISiteVente {
     private final static int COMMISION = 10;
 
+    @Autowired
+    private IPersistanceSiteVente persistanceSiteVente;
+
     private List<Utilisateur> utilisateurList = new ArrayList<Utilisateur>();
     private List<Administrateur> administrateurList = new ArrayList<Administrateur>();
 
@@ -21,6 +26,7 @@ public class SiteVente implements ISiteVente {
     public Utilisateur creationUtilisateur(String pseudo, String mdp, String villeResidence) {
         Utilisateur nouveauUtilisateur = new Utilisateur(pseudo, mdp, villeResidence);
         utilisateurList.add(nouveauUtilisateur);
+        persistanceSiteVente.ajouterUtilisateur(nouveauUtilisateur);
         return nouveauUtilisateur;
     }
 

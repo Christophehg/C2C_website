@@ -1,15 +1,28 @@
 package c2cwebsite.pojo;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Entity
+@Table(name="Utilisateurs")
 public class Utilisateur {
+
+    @Id
+    @GeneratedValue
+    private int numero;
 
     private String pseudo;
     private String mdpHache;
     private String villeResidence;
-    private List<Item> itemsAVendre;
-    private List<Item> itemsAchetes;
+
+    @OneToMany(mappedBy = "proprietaire", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Item> itemsAVendre = new ArrayList<>();
+
+    @OneToMany(mappedBy = "acquereur", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Item> itemsAchetes = new ArrayList<>();
 
     public Utilisateur(String pseudo, String mdpHache, String villeResidence) {
         this.pseudo = pseudo;
@@ -17,6 +30,10 @@ public class Utilisateur {
         this.villeResidence = villeResidence;
         this.itemsAVendre = new ArrayList<Item>();
         this.itemsAchetes = new ArrayList<Item>();
+    }
+
+    public Utilisateur() {
+
     }
 
     public void addItemAVendre(Item item) {
