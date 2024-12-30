@@ -1,4 +1,4 @@
-package c2cwebsite.pojo;
+package c2cwebsite.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +15,8 @@ public class Item {
 
     private String nom;
     private String description;
+
+
     private float prix;
     private boolean vendu;
     private String proprietaire;
@@ -34,7 +36,7 @@ public class Item {
 
     }
 
-    public void vendreObjet(Utilisateur acquereur) {
+    public void vendreObjet(User acquereur) {
         this.vendu = true;
         this.acquereur = acquereur.getPseudo();
         acquereur.addItemAchete(this);
@@ -51,6 +53,54 @@ public class Item {
 
     public float getPrix() {
         return prix;
+    }
+
+    public String getAcquereur() {
+        return acquereur;
+    }
+
+    public String getProprietaire() {
+        return proprietaire;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public int getNumeroE() {
+        return numeroE;
+    }
+
+    public void setAcquereur(String acquereur) {
+        this.acquereur = acquereur;
+    }
+
+    public void setProprietaire(String proprietaire) {
+        this.proprietaire = proprietaire;
+    }
+
+    public void setVendu(boolean vendu) {
+        this.vendu = vendu;
+    }
+
+    public void setPrix(float prix) {
+        this.prix = prix;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setNumeroE(int numeroE) {
+        this.numeroE = numeroE;
     }
 
 }
