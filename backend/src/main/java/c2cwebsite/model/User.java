@@ -1,4 +1,4 @@
-package c2cwebsite.pojo;
+package c2cwebsite.model;
 
 import jakarta.persistence.*;
 
@@ -8,14 +8,14 @@ import java.util.List;
 
 @Entity
 @Table(name="Utilisateurs")
-public class Utilisateur {
+public class User {
 
     @Id
     @GeneratedValue
     private int numero;
 
     private String pseudo;
-    private String mdpHache;
+    private String mdp;
     private String villeResidence;
 
     @OneToMany(mappedBy = "proprietaire", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -24,16 +24,16 @@ public class Utilisateur {
     @OneToMany(mappedBy = "acquereur", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Item> itemsAchetes = new ArrayList<>();
 
-    public Utilisateur(String pseudo, String mdpHache, String villeResidence) {
+    public User() {
+
+    }
+
+    public User(String pseudo, String mdp, String villeResidence) {
         this.pseudo = pseudo;
-        this.mdpHache = mdpHache;
+        this.mdp = mdp;
         this.villeResidence = villeResidence;
         this.itemsAVendre = new ArrayList<Item>();
         this.itemsAchetes = new ArrayList<Item>();
-    }
-
-    public Utilisateur() {
-
     }
 
     public void addItemAVendre(Item item) {
@@ -44,7 +44,7 @@ public class Utilisateur {
         itemsAchetes.add(item);
     }
 
-    public void vendreObjet(Item item, Utilisateur acquereur) {
+    public void vendreObjet(Item item, User acquereur) {
         for (Item obj : itemsAVendre) {
             if (obj.isSame(item)) {
                 acquereur.addItemAVendre(obj);
@@ -53,7 +53,6 @@ public class Utilisateur {
             }
         }
     }
-
 
 
     public List<Item> getItemsAchetes() {
@@ -80,8 +79,8 @@ public class Utilisateur {
         return itemsVendus;
     }
 
-    public boolean isSame(Utilisateur utilisateur) {
-        if (this.pseudo.equals(utilisateur.getPseudo())) {
+    public boolean isSame(User user) {
+        if (this.pseudo.equals(user.getPseudo())) {
             return true;
         }
         return false;
@@ -96,11 +95,18 @@ public class Utilisateur {
         return villeResidence;
     }
 
-    public String getMdpHache() {
-        return mdpHache;
+    public String getMdp() {
+        return mdp;
+    }
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
     }
 
-    public void setMdpHache(String mdpHache) {
-        this.mdpHache = mdpHache;
+    public void setMdp(String mdp) {
+        this.mdp = mdp;
+    }
+
+    public void setVilleResidence(String villeResidence) {
+        this.villeResidence = villeResidence;
     }
 }
