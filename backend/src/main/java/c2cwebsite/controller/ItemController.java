@@ -1,5 +1,6 @@
 package c2cwebsite.controller;
 
+import c2cwebsite.DTO.ItemDTO;
 import c2cwebsite.model.Item;
 import c2cwebsite.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class ItemController {
     }
 
     @PostMapping("/buy/{itemId}")
-    public ResponseEntity<?> buyItem(@RequestHeader("Authorization") String token, @PathVariable Long itemId) {
+    public ResponseEntity<?> buyItem(@RequestHeader("Authorization") String token, @PathVariable int itemId) {
         String realToken = token.substring(7);
         Item success = itemService.buyItem(realToken, itemId);
         if (success != null) {
@@ -44,7 +45,7 @@ public class ItemController {
 
     @GetMapping("/itemsNonVendus")
     public ResponseEntity<?> getItemsNonVendus() {
-        List<Item> items = itemService.getItemsNonVendus();
+        List<ItemDTO> items = itemService.getItemsNonVendus();
         if (items == null) {
             return ResponseEntity.status(400).body("Erreur lors de la récupération des items");
         }

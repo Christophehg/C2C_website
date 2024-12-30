@@ -4,6 +4,7 @@ import Connexion from './pages/Connexion';
 import Vendre from './pages/Vendre';
 import Recherche from './pages/Recherche';
 import AdminPage from './pages/AdminPage';
+import ProfilPage from './pages/Profil';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/login" element={<Connexion />} />
           <Route path="/sell" element={<Vendre />} />
           <Route path="/admin" element={<AdminPage />} />
+            <Route path="/profil" element={<ProfilPage />} />
         </Routes>
       </Router>
   );

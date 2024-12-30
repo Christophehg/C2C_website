@@ -79,6 +79,15 @@ public class User extends BaseUser {
     }
 
 
+    public boolean ownItem(Item item) {
+        for (Item obj : mesItems) {
+            if (obj.isSame(item)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public String getVilleResidence() {
         return villeResidence;
     }

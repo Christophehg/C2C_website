@@ -8,6 +8,7 @@ const ItemCard = ({ item }) => {
             <p>{item.description}</p>
             <p>Prix: {item.price} €</p>
             <p>Status: {item.isSold ? 'Vendu' : 'Disponible'}</p>
+            <p><em>Vendu par: {item.proprietaireNom}</em></p>
         </div>
     );
 };

@@ -1,5 +1,6 @@
 package c2cwebsite.service;
 
+import c2cwebsite.DTO.ItemDTO;
 import c2cwebsite.model.Item;
 import c2cwebsite.model.User;
 import c2cwebsite.repository.ItemRepository;
@@ -8,6 +9,7 @@ import c2cwebsite.security.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,22 +49,45 @@ public class ItemService {
     }
 
 
-    public List<Item> getItemsNonVendus() {
-        return itemRepository.findByVendu(false);
+    public List<ItemDTO> getItemsNonVendus() {
+        List<Item> items = itemRepository.findByVendu(false);
+
+        List<ItemDTO> itemDTOs = new ArrayList<>();
+
+        // Mapper chaque objet Item en un ItemDTO
+        for (Item item : items) {
+            ItemDTO itemDTO = new ItemDTO(
+                    item.getNumeroE(),
+                    item.getNom(),
+                    item.getDescription(),
+                    item.getPrix(),
+                    item.isVendu(),
+                    item.getProprietaire().getPseudo()  // Inclure le nom du vendeur
+            );
+            itemDTOs.add(itemDTO);
+        }
+
+//        return itemRepository.findByVendu(false);
+        return itemDTOs;
     }
 
-    public Item buyItem(String token, Long itemId) {
+    public Item buyItem(String token, int itemId) {
         String pseudo = jwtService.extractUserName(token);
         User user = userRepository.findByPseudo(pseudo);
         if(user == null) {
             throw new RuntimeException("User not found from dataBase");
         }
-
-        Item item = itemRepository.findById(Math.toIntExact(itemId))
+        System.out.println("item id: " + itemId);
+        Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException("Objet non trouvé."));
 
         if (item.getAcquereur() != null) {
             throw new IllegalStateException("Objet déjà vendu.");
+        }
+
+        boolean isUserOwnItme = user.ownItem(item);
+        if (isUserOwnItme) {
+            throw new IllegalStateException("Vous ne pouvez pas acheter votre propre objet.");
         }
 
         item.setAcquereur(user);
