@@ -1,7 +1,8 @@
 package c2cwebsite.service;
 
+import c2cwebsite.model.BaseUser;
 import c2cwebsite.model.UserPrincipal;
-import c2cwebsite.model.User;
+import c2cwebsite.repository.AdminRepository;
 import c2cwebsite.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,14 +16,21 @@ public class MyUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private AdminRepository adminRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepository.findByPseudo(username);
-        if(user == null) {
-            throw new UsernameNotFoundException("Utilisateur non trouvé");
+        BaseUser baseUser = userRepository.findByPseudo(username);
+        if (baseUser == null) {
+            baseUser = adminRepository.findByPseudo(username);
         }
 
-        return new UserPrincipal(user);
+        if (baseUser == null) {
+            throw new UsernameNotFoundException("User not found: " + username);
+        }
+
+        return new UserPrincipal(baseUser);
     }
 }

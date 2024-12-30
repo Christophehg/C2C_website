@@ -49,9 +49,10 @@ public class SiteVente implements ISiteVente {
 
     @Override
     public Item ajouterItem(String nom, String description, float prix, User user) {
-        Item nouveauItem = new Item(nom, description, prix, user.getPseudo());
-        ajouterItem(nouveauItem, user);
-        return nouveauItem;
+//        Item nouveauItem = new Item(nom, description, prix, user.getPseudo());
+//        ajouterItem(nouveauItem, user);
+//        return nouveauItem;
+        return null;
     }
 
     private void ajouterItem(Item item, User user) {

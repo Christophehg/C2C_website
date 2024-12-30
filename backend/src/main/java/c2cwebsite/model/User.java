@@ -7,37 +7,33 @@ import java.util.List;
 
 
 @Entity
-@Table(name="Utilisateurs")
-public class User {
+@Table(name="Users")
+public class User extends BaseUser {
 
-    @Id
-    @GeneratedValue
-    private int numero;
 
-    private String pseudo;
-    private String mdp;
     private String villeResidence;
 
     @OneToMany(mappedBy = "proprietaire", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Item> itemsAVendre = new ArrayList<>();
+    private List<Item> mesItems = new ArrayList<>();
+
 
     @OneToMany(mappedBy = "acquereur", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Item> itemsAchetes = new ArrayList<>();
+
 
     public User() {
 
     }
 
     public User(String pseudo, String mdp, String villeResidence) {
-        this.pseudo = pseudo;
-        this.mdp = mdp;
+        super(pseudo, mdp);
         this.villeResidence = villeResidence;
-        this.itemsAVendre = new ArrayList<Item>();
+        this.mesItems = new ArrayList<Item>();
         this.itemsAchetes = new ArrayList<Item>();
     }
 
     public void addItemAVendre(Item item) {
-        itemsAVendre.add(item);
+        mesItems.add(item);
     }
 
     public void addItemAchete(Item item) {
@@ -45,7 +41,7 @@ public class User {
     }
 
     public void vendreObjet(Item item, User acquereur) {
-        for (Item obj : itemsAVendre) {
+        for (Item obj : mesItems) {
             if (obj.isSame(item)) {
                 acquereur.addItemAVendre(obj);
                 obj.vendreObjet(acquereur);
@@ -54,6 +50,9 @@ public class User {
         }
     }
 
+    public List<Item> getMesItems() {
+        return mesItems;
+    }
 
     public List<Item> getItemsAchetes() {
         return itemsAchetes;
@@ -79,34 +78,13 @@ public class User {
         return itemsVendus;
     }
 
-    public boolean isSame(User user) {
-        if (this.pseudo.equals(user.getPseudo())) {
-            return true;
-        }
-        return false;
-    }
-
-
-    public String getPseudo() {
-        return pseudo;
-    }
 
     public String getVilleResidence() {
         return villeResidence;
     }
 
-    public String getMdp() {
-        return mdp;
-    }
-    public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
-    }
-
-    public void setMdp(String mdp) {
-        this.mdp = mdp;
-    }
-
     public void setVilleResidence(String villeResidence) {
         this.villeResidence = villeResidence;
     }
+
 }

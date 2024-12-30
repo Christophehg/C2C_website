@@ -4,8 +4,11 @@ import c2cwebsite.model.Item;
 import c2cwebsite.model.User;
 import c2cwebsite.repository.ItemRepository;
 import c2cwebsite.repository.UserRepository;
+import c2cwebsite.security.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ItemService {
@@ -16,33 +19,56 @@ public class ItemService {
     @Autowired
     private UserRepository userRepository;
 
-    public Item addItem(Item item, String pseudo) {
+    @Autowired
+    private JWTService jwtService;
+
+    public Item addItem(String token, Item item) {
+        //Bearer token
+        System.out.println("Adding item");
+        String pseudo = jwtService.extractUserName(token);
+
+
+        if (pseudo == null) {
+            throw new RuntimeException("User not found from token");
+        }
+
         User user = userRepository.findByPseudo(pseudo);
         if(user == null) {
-            throw new RuntimeException("User not found");
+            throw new RuntimeException("User not found from dataBase");
         }
-        Item newItem = new Item(item.getNom(), item.getDescription(), item.getPrix(), user.getPseudo());
-        newItem.setVendu(false);
-        newItem.setAcquereur("");
-        newItem.setProprietaire(user.getPseudo());
-        user.addItemAVendre(item);
+        System.out.println("User found: " + user.getPseudo());
 
-        return itemRepository.save(item);
+        Item newItem = new Item(item.getNom(), item.getDescription(), item.getPrix(), user);
+        newItem.setVendu(false);
+        newItem.setAcquereur(null);
+        user.addItemAVendre(newItem);
+
+        return itemRepository.save(newItem);
     }
 
-    public boolean sellItem(Long itemId, String pseudoAcheteur) {
+
+    public List<Item> getItemsNonVendus() {
+        return itemRepository.findByVendu(false);
+    }
+
+    public Item buyItem(String token, Long itemId) {
+        String pseudo = jwtService.extractUserName(token);
+        User user = userRepository.findByPseudo(pseudo);
+        if(user == null) {
+            throw new RuntimeException("User not found from dataBase");
+        }
+
         Item item = itemRepository.findById(Math.toIntExact(itemId))
                 .orElseThrow(() -> new IllegalArgumentException("Objet non trouvé."));
+
         if (item.getAcquereur() != null) {
             throw new IllegalStateException("Objet déjà vendu.");
         }
 
-        User acquereur = userRepository.findByPseudo(pseudoAcheteur);
-
-        item.setAcquereur(acquereur.getPseudo());
+        item.setAcquereur(user);
         item.setVendu(true);
-        acquereur.addItemAchete(item);
-        itemRepository.save(item);
-        return true;
+        user.addItemAchete(item);
+        return itemRepository.save(item);
     }
+
 }
