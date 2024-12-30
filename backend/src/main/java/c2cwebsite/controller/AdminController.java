@@ -1,11 +1,12 @@
 package c2cwebsite.controller;
 
 import c2cwebsite.model.Admin;
-import c2cwebsite.model.User;
 import c2cwebsite.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -38,8 +39,14 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/commission")
-    public float calculateCommission() {
-        return adminService.calculateCommission();
+    @GetMapping("/ca")
+    public ResponseEntity<?> calculateCommission() {
+        List<Float> infos = adminService.calculateCA();
+        if (infos != null) {
+            return ResponseEntity.ok(infos);
+        } else {
+            return ResponseEntity.status(400).body("Erreur lors de la commision");
+        }
+
     }
 }

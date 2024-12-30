@@ -34,11 +34,13 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/login", "/user/register").permitAll()
+                        .requestMatchers("/user/login", "/user/register", "/user/logout").permitAll()
                         .requestMatchers("/admin/login", "/admin/register").permitAll()
                         .requestMatchers("/admin/commission").hasRole("ADMIN") // Réservé aux admins
-                        .requestMatchers("/test").hasRole("ADMIN")   // Réservé aux utilisateurs
-                        .requestMatchers("/item/**").hasRole("USER") // Réservé aux utilisateurs
+                        .requestMatchers("/admin/ca").hasRole("ADMIN")
+                        .requestMatchers("/item/add").hasRole("USER")
+                        .requestMatchers("/item/buy/{itemId}").hasRole("USER") // Réservé aux utilisateurs
+                        .requestMatchers("/item/itemsNonVendus").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

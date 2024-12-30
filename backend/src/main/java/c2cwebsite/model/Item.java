@@ -49,7 +49,7 @@ public class Item {
     }
 
     public boolean isSame(Item item) {
-        return this.nom.equals(item.nom);
+        return this.getNumeroE() == item.getNumeroE();
     }
 
 

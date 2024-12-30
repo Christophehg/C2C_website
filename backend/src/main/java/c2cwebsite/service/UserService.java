@@ -34,27 +34,11 @@ public class UserService {
             throw new RuntimeException("User already exists");
         }
         User newUser = new User(user.getPseudo(), passwordEncoder.encode(user.getMdp()), user.getVilleResidence());
-
+        System.out.println("User created");
         return userRepository.save(newUser);
     }
 
-//    public String login(String pseudo, String mdp) {
-////        User user = userRepository.findByPseudo(pseudo);
-////        if(user != null) {
-////            if (passwordEncoder.matches(mdp, user.getMdp())){
-////                return user;
-////            }
-////        }
-////        return null;
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(pseudo, mdp));
-//        if (authentication.isAuthenticated()){
-//            return jwtService.generateToken(pseudo);
-//        }
-//        return null;
-//
-//    }
-
-    public String login(String pseudo, String mdp) {
+    public List<String> login(String pseudo, String mdp) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(pseudo, mdp)
         );
@@ -62,7 +46,9 @@ public class UserService {
         if (authentication.isAuthenticated()) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             Role role = Role.valueOf(userDetails.getAuthorities().stream().findFirst().get().getAuthority().substring(5));
-            return jwtService.generateToken(pseudo, role);
+            List<String> infos = List.of(jwtService.generateToken(pseudo, role), role.toString(), pseudo);
+            return infos;
+//            return jwtService.generateToken(pseudo, role);
         }
         return null;
     }

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import './Vendre.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import api from '../api/api';
+import tokenManager from "../LocalStorage/TokenManager";
 
 const Vendre = () => {
     const [formData, setFormData] = useState({ title: '', description: '', price: '' });
@@ -12,30 +14,38 @@ const Vendre = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Simulate item submission
-        setMessage('Votre objet a été mis en vente avec succès !');
-        setFormData({ title: '', description: '', price: '' });
+
+        try {
+            const response = await api.vendreItem(formData.title, formData.description, formData.price);
+            console.log("reponse server", response);
+
+            setMessage('Votre item a été mis en vente avec succès !');
+            setFormData({ title: '', description: '', price: '' });
+        } catch (error) {
+            console.error('Erreur lors de la soumission du formulaire:', error);
+            setMessage('Une erreur est survenue lors de l\'inscription');
+        }
     };
 
     return (
         <div>
             <Navbar />
             <div className="sell-container">
-                <h1>Vendre un objet</h1>
+                <h1>Vendre un item</h1>
                 <form className="sell-form" onSubmit={handleSubmit}>
                     <input
                         type="text"
                         name="title"
-                        placeholder="Titre de l'objet"
+                        placeholder="Titre de l'item"
                         value={formData.title}
                         onChange={handleChange}
                         required
                     />
                     <textarea
                         name="description"
-                        placeholder="Description de l'objet"
+                        placeholder="Description de l'item"
                         value={formData.description}
                         onChange={handleChange}
                         required

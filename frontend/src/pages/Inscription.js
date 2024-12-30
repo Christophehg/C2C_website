@@ -3,6 +3,7 @@ import './Inscription.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import api  from '../api/api';
+import {redirect} from "react-router-dom";
 
 const Inscription = () => {
     const [formData, setFormData] = useState({ login: '', password: '', city: '' });
@@ -15,15 +16,11 @@ const Inscription = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Simulate form submission
-        setMessage('Inscription réussie !');
-        console.log(formData);
-        // setFormData({ login: '', password: '', city: '' });
-
         try {
-            const response = await api.testAPI(formData.login, formData.password, formData.city);
-            setMessage(response); // Message de la réponse, peut-être "Test réussi"
+            const response = await api.register(formData.login, formData.password, formData.city);
+            setMessage(response);
             setFormData({ login: '', password: '', city: '' });
+            window.location.href = '/login';
         } catch (error) {
             console.error('Erreur lors de la soumission du formulaire:', error);
             setMessage('Une erreur est survenue lors de l\'inscription');
