@@ -34,8 +34,12 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register").permitAll() // Permet l'accès à login et inscription
-                        .anyRequest().authenticated() // Sécurise les autres endpoints
+                        .requestMatchers("/user/login", "/user/register").permitAll()
+                        .requestMatchers("/admin/login", "/admin/register").permitAll()
+                        .requestMatchers("/admin/commission").hasRole("ADMIN") // Réservé aux admins
+                        .requestMatchers("/test").hasRole("ADMIN")   // Réservé aux utilisateurs
+                        .requestMatchers("/item/**").hasRole("USER") // Réservé aux utilisateurs
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

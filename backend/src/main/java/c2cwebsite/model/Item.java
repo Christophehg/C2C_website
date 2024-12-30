@@ -1,9 +1,7 @@
 package c2cwebsite.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 
 @Entity
@@ -19,17 +17,25 @@ public class Item {
 
     private float prix;
     private boolean vendu;
-    private String proprietaire;
-    private String acquereur;
+
+    @ManyToOne
+    @JoinColumn(name = "proprietaire_id")
+    @JsonIgnore
+    private User proprietaire;
+
+    @ManyToOne
+    @JoinColumn(name = "acquereur_id")
+    @JsonIgnore
+    private User acquereur;
 
 
-    public Item(String nom, String description, float prix, String proprietaire) {
+    public Item(String nom, String description, float prix, User proprietaire) {
         this.nom = nom;
         this.description = description;
         this.prix = prix;
         this.vendu = false;
         this.proprietaire = proprietaire;
-        acquereur = "";
+        acquereur = null;
     }
 
     public Item() {
@@ -38,7 +44,7 @@ public class Item {
 
     public void vendreObjet(User acquereur) {
         this.vendu = true;
-        this.acquereur = acquereur.getPseudo();
+        this.acquereur = acquereur;
         acquereur.addItemAchete(this);
     }
 
@@ -55,11 +61,11 @@ public class Item {
         return prix;
     }
 
-    public String getAcquereur() {
+    public User getAcquereur() {
         return acquereur;
     }
 
-    public String getProprietaire() {
+    public User getProprietaire() {
         return proprietaire;
     }
 
@@ -75,11 +81,11 @@ public class Item {
         return numeroE;
     }
 
-    public void setAcquereur(String acquereur) {
+    public void setAcquereur(User acquereur) {
         this.acquereur = acquereur;
     }
 
-    public void setProprietaire(String proprietaire) {
+    public void setProprietaire(User proprietaire) {
         this.proprietaire = proprietaire;
     }
 

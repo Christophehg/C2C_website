@@ -1,5 +1,6 @@
 package c2cwebsite.service;
 
+import c2cwebsite.model.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -34,18 +35,22 @@ public class JWTService {
         }
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String username, Role role) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role);
+//        System.out.println("String role: " + role);
 
         return Jwts.builder()
-                .claims()
-                .add(claims)
-                .subject(username)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .and()
+                .setClaims(claims)
+                .setSubject(username)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // Token valide 10 heures
                 .signWith(getKey())
                 .compact();
+    }
+
+    public String extractRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
     }
 
 
@@ -69,9 +74,10 @@ public class JWTService {
         return Jwts.parser().setSigningKey(getKey()).build().parseClaimsJws(token).getBody();
     }
 
-    public boolean validateToken(String token, String pseudo    ) {
+    public boolean validateToken(String token, String pseudo, String role)  {
         final String userName = extractUserName(token);
-        return (userName.equals(pseudo) && !isTokenExpired(token));
+        final String extractedRole = extractRole(token);
+        return (userName.equals(pseudo) && !isTokenExpired(token) && extractedRole.equals(role));
     }
 
     private boolean isTokenExpired(String token) {

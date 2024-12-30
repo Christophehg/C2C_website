@@ -31,16 +31,23 @@ public class JwtFilter extends OncePerRequestFilter {
         String authorizationHeader = request.getHeader("Authorization");
         String token = null;
         String pseudo = null;
+        String role = null;
+        System.out.println("Verification du token");
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             token = authorizationHeader.substring(7);
             pseudo = jwtService.extractUserName(token);
+            role = jwtService.extractRole(token);
+            System.out.println("Valide");
+            System.out.println("Pseudo : " + pseudo);
+            System.out.println("Role : " + role);
+
         }
 
         if (pseudo != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails = context.getBean(MyUserDetailsService.class).loadUserByUsername(pseudo);
 
-            if (jwtService.validateToken(token, pseudo)) {
+            if (jwtService.validateToken(token, pseudo, role)) {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

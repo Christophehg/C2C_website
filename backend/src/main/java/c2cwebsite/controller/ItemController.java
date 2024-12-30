@@ -1,11 +1,13 @@
 package c2cwebsite.controller;
 
+import c2cwebsite.model.Item;
 import c2cwebsite.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/item")
@@ -15,11 +17,43 @@ public class ItemController {
     private ItemService itemService;
 
 
-//    @PostMapping("/add")
-//    public ResponseEntity<Item> addItem(@RequestBody ItemDto itemDto) {
-//        Item item = itemService.ajouterItem(itemDto.getDescription(), itemDto.getPrix(), itemDto.getPseudoProprietaire());
-//        return new ResponseEntity<>(item, HttpStatus.CREATED);
-//    }
+    @PostMapping("/add")
+    public ResponseEntity<?> addItem(@RequestHeader("Authorization") String token, @RequestBody Item itemJson) {
+        String realToken = token.substring(7); // Récupère le token sans le "Bearer "
+        // 1. Appeler le service pour ajouter l'item
+        Item item = itemService.addItem(realToken, itemJson);
+
+        // 2. Vérifier si l'item a été créé avec succès
+        if (item != null) {
+            return new ResponseEntity<>(item, HttpStatus.CREATED); // Renvoie l'item créé et un statut 201
+        } else {
+            return new ResponseEntity<>("Erreur lors de la création de l'élément", HttpStatus.BAD_REQUEST); // Si une erreur se produit
+        }
+    }
+
+    @PostMapping("/buy/{itemId}")
+    public ResponseEntity<?> buyItem(@RequestHeader("Authorization") String token, @PathVariable Long itemId) {
+        String realToken = token.substring(7);
+        Item success = itemService.buyItem(realToken, itemId);
+        if (success != null) {
+            return ResponseEntity.ok("Item acheté avec succès");
+        } else {
+            return ResponseEntity.status(400).body("Erreur lors de l'achat de l'item");
+        }
+    }
+
+    @GetMapping("/itemsNonVendus")
+    public ResponseEntity<?> getItemsNonVendus() {
+        List<Item> items = itemService.getItemsNonVendus();
+        if (items == null) {
+            return ResponseEntity.status(400).body("Erreur lors de la récupération des items");
+        }
+        else {
+            return ResponseEntity.ok(items);
+        }
+    }
+
+
 //
 //    @PostMapping("/sell/{itemId}")
 //    public ResponseEntity<String> sellItem(@PathVariable Long itemId, @RequestBody SellItemDto sellItemDto) {
