@@ -129,6 +129,17 @@ const acheterItem = async (idItem) => {
     }
 };
 
+const changerEtatItem = async (idItem) => {
+    try {
+        // Envoi de la requête POST avec les paramètres encodés dans le corps de la requête
+        const response = await apiConfig.post(`/item/changerEtat/${idItem}`);
+        return response.data;
+    } catch (error) {
+        console.error('Erreur lors du changement d\'etat de l\'item :', error);
+        throw error;
+    }
+};
+
 const testAPI = async (pseudo, mdp, villeResidence) => {
     try {
         const params = new URLSearchParams({
@@ -151,5 +162,7 @@ const testAPI = async (pseudo, mdp, villeResidence) => {
     }
 };
 
+
+
 export default { register, login, vendreItem, getALLItemsNonVendus, chiffreAffaire, logout,
-    mesItemsAchetes, mesItems, acheterItem, testAPI };
+    mesItemsAchetes, mesItems, acheterItem, changerEtatItem, testAPI };
