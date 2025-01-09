@@ -96,4 +96,32 @@ public class ItemService {
         return itemRepository.save(item);
     }
 
+    public Item changeEtatItem(String token, int itemId) {
+        System.out.println("Changer etat item ");
+        String pseudo = jwtService.extractUserName(token);
+        User user = userRepository.findByPseudo(pseudo);
+        if(user == null) {
+            throw new RuntimeException("User not found from dataBase");
+        }
+        System.out.println("item id: " + itemId);
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new IllegalArgumentException("Objet non trouvé."));
+
+        if (item.getAcquereur() != null) {
+            throw new IllegalStateException("Objet déjà vendu.");
+        }
+
+        boolean isUserOwnItme = user.ownItem(item);
+        if (isUserOwnItme) {
+            item.setAcquereur(null);
+            item.setVendu(true);
+            user.addItemAchete(item);
+            return itemRepository.save(item);
+        }
+        else {
+            throw new IllegalStateException("Vous ne pouvez pas changer l'état de l'objet qui ne vous appartient pas.");
+        }
+
+    }
+
 }

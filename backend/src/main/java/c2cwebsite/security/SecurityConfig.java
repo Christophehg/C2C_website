@@ -39,6 +39,8 @@ public class SecurityConfig {
                         .requestMatchers("/admin/commission").hasRole("ADMIN") // Réservé aux admins
                         .requestMatchers("/admin/ca").hasRole("ADMIN")
                         .requestMatchers("/item/add").hasRole("USER")
+                        .requestMatchers("/user/mesItems").hasRole("USER")
+                        .requestMatchers("/item/changerEtat/{itemId}").hasRole("USER") // Réservé aux utilisateurs
                         .requestMatchers("/item/buy/{itemId}").hasRole("USER") // Réservé aux utilisateurs
                         .requestMatchers("/item/itemsNonVendus").permitAll()
                         .anyRequest().authenticated()
@@ -72,7 +74,7 @@ public class SecurityConfig {
     // Permet à l'application front-end de communiquer avec l'application back-end
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.addAllowedOrigin("http://localhost:3000");
+        corsConfig.addAllowedOrigin("https://localhost:3000");
         corsConfig.addAllowedMethod("GET");
         corsConfig.addAllowedMethod("POST");
         corsConfig.addAllowedMethod("PUT");

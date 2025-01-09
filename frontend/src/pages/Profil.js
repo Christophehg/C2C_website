@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import api from '../api/api';
 import './Profil.css';
+import tokenManager from "../LocalStorage/TokenManager";
 
 const Profil = () => {
 
@@ -41,6 +42,18 @@ const Profil = () => {
         fetchItems();
     }, []);
 
+    const handleButtonClickVendu = async (itemId) => {
+
+        try {
+            console.log(`Bouton cliqué pour l'item ${itemId}`);
+            const response = await api.changerEtatItem(itemId);
+            window.location.reload();
+        } catch (error) {
+            console.error('Erreur lors de la soumission du formulaire:', error);
+        }
+    };
+
+
     return (
         <div id="secondBody">
             <Navbar />
@@ -66,7 +79,12 @@ const Profil = () => {
                     <h2>Objets à vendre</h2>
                     <ul>
                         {itemsForSale.map(item => (
-                            <li key={item.id}>{item.title} - {item.price} €</li>
+                            <li key={item.id}>{item.title} - {item.price} €
+                                <button id="clickButtonVendu"
+                                onClick={() => handleButtonClickVendu(item.id)}>
+                                A été vendu
+                                </button>
+                            </li>
                         ))}
                     </ul>
                 </div>

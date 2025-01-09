@@ -54,6 +54,16 @@ public class ItemController {
         }
     }
 
+    @PostMapping("/changerEtat/{itemId}")
+    public ResponseEntity<?> changerEtat(@RequestHeader("Authorization") String token, @PathVariable int itemId) {
+        String realToken = token.substring(7);
+        Item success = itemService.changeEtatItem(realToken, itemId);
+        if (success != null) {
+            return ResponseEntity.ok("Item acheté avec succès");
+        } else {
+            return ResponseEntity.status(400).body("Erreur lors de l'achat de l'item");
+        }
+    }
 
 //
 //    @PostMapping("/sell/{itemId}")

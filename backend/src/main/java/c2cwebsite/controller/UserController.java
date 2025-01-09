@@ -29,6 +29,7 @@ public class UserController {
 
     @RequestMapping("/login")
     public ResponseEntity<?> login(@RequestBody User userJson) {
+            System.out.println("login");
           List<String> reponse = userService.login(userJson.getPseudo(), userJson.getMdp());
 
             if (reponse != null) {
