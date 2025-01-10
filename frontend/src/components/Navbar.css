@@ -17,6 +17,18 @@
     text-transform: uppercase;
 }
 
+.connected-text {
+    margin: 0;
+}
+
+.navbar-connected li {
+    list-style: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: inline-block;
+    color: #F4EDD3;
+}
+
 .navbar-links a {
     color: white;
     text-decoration: none;

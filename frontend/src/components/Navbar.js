@@ -23,13 +23,16 @@ const Navbar = () => {
         <nav className="navbar">
             <ul className="navbar-links">
                 <li><Link to="/">Recherche</Link></li>
-                { isUser && isUser && <li><Link to="/sell">Vendre un objet</Link></li>}
-                <li><Link to="/signup">Inscription</Link></li>
+                {isUser && isUser && <li><Link to="/sell">Vendre un objet</Link></li>}
                 {isConnect && <li><Link to="/profil">Mon Profil</Link></li>}
+                <li><Link to="/signup">Inscription</Link></li>
                 <li><Link to="/login">Connexion</Link></li>
-                { isAdmin && <li><Link to="/admin">Admin</Link></li>}
-                { isConnect && <li><Link to="/" onClick={handleLogout}>Déconnexion</Link></li>}
-                { isConnect && <li>{pseudoUser}</li>}
+                {isAdmin && <li><Link to="/admin">Admin</Link></li>}
+                {isConnect && <li><Link to="/" onClick={handleLogout}>Déconnexion</Link></li>}
+            </ul>
+
+            <ul className="navbar-connected">
+                {isConnect && <h3 className={"connected-text"}>Bienvenue <li>{pseudoUser}</li> !</h3>}
             </ul>
         </nav>
     );
