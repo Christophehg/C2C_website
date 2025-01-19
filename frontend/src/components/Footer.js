@@ -4,7 +4,7 @@ import "./Footer.css"
 const Footer = () => {
     return (
         <footer>
-            <p className="footer-text">© 2024 Site de vente de particulier à particulier. Tous droits réservés.</p>
+            <p className="footer-text">© 2025 Site de vente de particulier à particulier. Tous droits réservés.</p>
         </footer>
     );
 };

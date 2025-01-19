@@ -1,20 +1,21 @@
 package c2cwebsite.controller;
 
 import c2cwebsite.model.Admin;
-import c2cwebsite.service.AdminService;
+import c2cwebsite.service.Interfaces.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
-@RestController
+@Controller
 @RequestMapping("/admin")
 public class AdminController {
 
     @Autowired
-    private AdminService adminService;
+    private IAdminService adminService;
 
 
     @PostMapping("/register")
@@ -28,7 +29,7 @@ public class AdminController {
     }
 
 
-    @RequestMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Admin userJson) {
         String reponse = adminService.loginAdmin(userJson.getPseudo(), userJson.getMdp());
 

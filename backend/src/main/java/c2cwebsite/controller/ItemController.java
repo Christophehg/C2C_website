@@ -2,20 +2,21 @@ package c2cwebsite.controller;
 
 import c2cwebsite.DTO.ItemDTO;
 import c2cwebsite.model.Item;
-import c2cwebsite.service.ItemService;
+import c2cwebsite.service.Interfaces.IItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/item")
 public class ItemController {
 
     @Autowired
-    private ItemService itemService;
+    private IItemService itemService;
 
 
     @PostMapping("/add")
@@ -65,20 +66,4 @@ public class ItemController {
         }
     }
 
-//
-//    @PostMapping("/sell/{itemId}")
-//    public ResponseEntity<String> sellItem(@PathVariable Long itemId, @RequestBody SellItemDto sellItemDto) {
-//        boolean success = itemService.vendreItem(itemId, sellItemDto.getPseudoAcheteur());
-//        if (success) {
-//            return new ResponseEntity<>("Item vendu avec succès", HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>("Échec de la vente", HttpStatus.BAD_REQUEST);
-//        }
-//    }
-//
-//    @GetMapping("/available")
-//    public ResponseEntity<List<Item>> getAvailableItems(@RequestParam String keyword) {
-//        List<Item> items = itemService.rechercherItemsDisponibles(keyword);
-//        return new ResponseEntity<>(items, HttpStatus.OK);
-//    }
 }

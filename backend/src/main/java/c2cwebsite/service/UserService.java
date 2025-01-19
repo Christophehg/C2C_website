@@ -4,6 +4,8 @@ import c2cwebsite.model.Item;
 import c2cwebsite.model.Role;
 import c2cwebsite.model.User;
 import c2cwebsite.repository.UserRepository;
+import c2cwebsite.service.Interfaces.IJWTService;
+import c2cwebsite.service.Interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService implements IUserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -24,7 +26,7 @@ public class UserService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JWTService jwtService;
+    private IJWTService jwtService;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;

@@ -5,7 +5,8 @@ import c2cwebsite.model.Item;
 import c2cwebsite.model.User;
 import c2cwebsite.repository.ItemRepository;
 import c2cwebsite.repository.UserRepository;
-import c2cwebsite.security.JwtFilter;
+import c2cwebsite.service.Interfaces.IItemService;
+import c2cwebsite.service.Interfaces.IJWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ItemService {
+public class ItemService implements IItemService {
 
     @Autowired
     private ItemRepository itemRepository;
@@ -22,7 +23,7 @@ public class ItemService {
     private UserRepository userRepository;
 
     @Autowired
-    private JWTService jwtService;
+    private IJWTService jwtService;
 
     public Item addItem(String token, Item item) {
         //Bearer token
@@ -67,7 +68,6 @@ public class ItemService {
             itemDTOs.add(itemDTO);
         }
 
-//        return itemRepository.findByVendu(false);
         return itemDTOs;
     }
 
