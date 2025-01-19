@@ -3,7 +3,6 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import api from '../api/api';
 import './Profil.css';
-import tokenManager from "../LocalStorage/TokenManager";
 
 const Profil = () => {
 

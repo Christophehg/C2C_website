@@ -3,7 +3,6 @@ import './Inscription.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import api  from '../api/api';
-import {redirect} from "react-router-dom";
 
 const Inscription = () => {
     const [formData, setFormData] = useState({ login: '', password: '', city: '' });

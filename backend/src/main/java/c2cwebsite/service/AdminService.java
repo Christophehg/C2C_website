@@ -5,6 +5,8 @@ import c2cwebsite.model.Admin;
 import c2cwebsite.model.Role;
 import c2cwebsite.repository.AdminRepository;
 import c2cwebsite.repository.ItemRepository;
+import c2cwebsite.service.Interfaces.IAdminService;
+import c2cwebsite.service.Interfaces.IJWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class AdminService {
+public class AdminService implements IAdminService {
 
     @Autowired
     private ItemRepository itemRepository;
@@ -29,7 +31,7 @@ public class AdminService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JWTService jwtService;
+    private IJWTService jwtService;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -70,11 +72,6 @@ public class AdminService {
                 .count() * 1f;
         infos.add(nombreItems);
         return infos;
-
-//        return itemRepository.findAll().stream()
-//                .filter(item -> item.isVendu())
-//                .map(item -> item.getPrix() * 0.1f)
-//                .reduce(0f, Float::sum);
     }
 
 }

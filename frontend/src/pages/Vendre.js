@@ -3,7 +3,6 @@ import './Vendre.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import api from '../api/api';
-import tokenManager from "../LocalStorage/TokenManager";
 
 const Vendre = () => {
     const [formData, setFormData] = useState({ title: '', description: '', price: '' });

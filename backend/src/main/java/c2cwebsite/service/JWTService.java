@@ -1,6 +1,7 @@
 package c2cwebsite.service;
 
 import c2cwebsite.model.Role;
+import c2cwebsite.service.Interfaces.IJWTService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -21,7 +22,7 @@ import java.util.function.Function;
 
 
 @Service
-public class JWTService {
+public class JWTService implements IJWTService {
 
     private String secretKey = "";
 

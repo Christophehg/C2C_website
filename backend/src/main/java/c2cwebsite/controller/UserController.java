@@ -2,20 +2,21 @@ package c2cwebsite.controller;
 
 import c2cwebsite.model.Item;
 import c2cwebsite.model.User;
-import c2cwebsite.service.UserService;
+import c2cwebsite.service.Interfaces.IUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/user")
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private IUserService userService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User userJson) {
@@ -27,7 +28,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User userJson) {
             System.out.println("login");
           List<String> reponse = userService.login(userJson.getPseudo(), userJson.getMdp());
@@ -52,7 +53,7 @@ public class UserController {
         return ResponseEntity.ok("Déconnexion réussie.");
     }
 
-    @RequestMapping("/mesItems")
+    @GetMapping("/mesItems")
     public ResponseEntity<?> items(@RequestHeader("Authorization") String token){
         String realToken = token.substring(7);
         List<Item> items = userService.getMesItems(realToken);
@@ -64,7 +65,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping("/mesItemsAchetes")
+    @GetMapping("/mesItemsAchetes")
     public ResponseEntity<?> itemsAchetes(@RequestHeader("Authorization") String token){
         String realToken = token.substring(7);
         List<Item> items = userService.getMesItemsAchetes(realToken);
